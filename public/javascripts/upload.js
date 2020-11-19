@@ -155,6 +155,9 @@ $(() => {
     $('#category').on('change', (e) => {
         e.preventDefault();
         let category = e.target.value;
+        //let option = '<option value="">--Select SubSubCategory--</option>';
+        let option = '';
+        $("#subSubCategory").html(option);
         $.ajax({
             url: 'getSubCategory',
             method: "POST",
@@ -163,11 +166,36 @@ $(() => {
             }
         }).done(res => {
             if (res.status) {
-                let options = ``
+                //let options = `<option value="">--Select SubCategory--</option>`
+                let options = ``;
                 res.subCategory.forEach(element => {
                     options += `<option value="${element.subCategoryID}">${element.name}</option>`
                 });
                 $('#subCategory').html(options)
+            }
+        })
+    })
+    $('#subCategory').on('change', (e) => {
+        e.preventDefault();
+        let subCategory = e.target.value;
+        let category = $("#category").val();
+        //console.log("---cagegory---", category, subCategory);
+        $.ajax({
+            url: 'getSubSubCategory',
+            method: "POST",
+            data: {
+                category,
+                subCategory
+            }
+        
+        }).done(res => {
+            if (res.status) {
+                //let options = `<option value="">--Select SubSubCategory--</option>`
+                let options = ``
+                res.subSubCategory.forEach(element => {
+                    options += `<option value="${element.subSubCategoryID}">${element.name}</option>`
+                });
+                $('#subSubCategory').html(options)
             }
         })
     })
@@ -249,7 +277,7 @@ $(() => {
                 icon: "warning",
                 button: "OK",
             });
-            return;
+            return; 
         }
         else {
             $('#uploaddata_old').prop('disabled', true);

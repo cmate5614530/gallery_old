@@ -49,7 +49,7 @@ class uploadController {
         let nkey = await nkeyModel.find({});
         let txtkey = await txtkeyModel.find({});
         let categoryData = await getCategory();
-        // console.log(albumlist)
+        // console.log(albumlist) 
         res.render('upload', { key: key, albumlist: albumlist.albumlist, wxcodelist: albumlist.wxcodelist, pmtkey: pmtkey, nkey: nkey, txtkey: txtkey, categoryData: categoryData.data });
     }
     async getSubCategory(req, res) {
@@ -69,6 +69,26 @@ class uploadController {
             }
             let subCategory = body
             res.json({ status: true, subCategory: subCategory.data });
+        })
+    }
+    async getSubSubCategory(req, res) {
+        let { category, subCategory } = req.body;
+        console.log("uploadController -> getSubSubCategory -> cate, subCategory", category, subCategory)
+        let option = {
+            method: "POST",
+            url: `${process.env.UI_SERVER_URL}/getSubSubCategory`,
+            json: {
+                categoryID: category,
+                subCategoryID: subCategory
+            }
+        }
+        request(option, (err, response, body) => {
+            if (err) {
+                console.log(err);
+                return res.json({ status: false });
+            }
+            let subSubCategory = body
+            res.json({ status: true, subSubCategory: subSubCategory.data });
         })
     }
     async addkey(req, res) {

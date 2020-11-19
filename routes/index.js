@@ -15,7 +15,7 @@ router.get('/download', main.downloadfile);
 router.get('/downloadexecl', main.downloadcsv);
 router.get('/getstatus', main.getstatus);
 router.get('/upstatus', upload.upstatus);
-
+ 
 /* POST requests */
 router.post('/upload', upload.startUpload);
 router.post('/upload_old', upload.startUploadOld);
@@ -29,7 +29,8 @@ router.post('/addnkey', upload.addnkey);
 router.post('/deletenkey', upload.deletenkey);
 router.post('/addtxtkey', upload.addtxtkey);
 router.post('/deletetxtkey', upload.deletetxtkey);
-router.post('/getSubCategory', upload.getSubCategory)
+router.post('/getSubCategory', upload.getSubCategory);
+router.post('/getSubSubCategory', upload.getSubSubCategory);
 
 
 module.exports = router;

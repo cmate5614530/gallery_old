@@ -155,9 +155,6 @@ $(() => {
     $('#category').on('change', (e) => {
         e.preventDefault();
         let category = e.target.value;
-        //let option = '<option value="">--Select SubSubCategory--</option>';
-        let option = '';
-        $("#subSubCategory").html(option);
         $.ajax({
             url: 'getSubCategory',
             method: "POST",
@@ -166,12 +163,34 @@ $(() => {
             }
         }).done(res => {
             if (res.status) {
-                //let options = `<option value="">--Select SubCategory--</option>`
-                let options = ``;
+                let options = ``
                 res.subCategory.forEach(element => {
                     options += `<option value="${element.subCategoryID}">${element.name}</option>`
                 });
-                $('#subCategory').html(options)
+                $('#subCategory').html(options);
+                if(res.subCategory !== []){
+                    let sub = res.subCategory;
+                    $.ajax({
+                        url: 'getSubSubCategory',
+                        method: "POST",
+                        data: {
+                            category: $('#category').val(),
+                            subCategory: sub[0].subCategoryID
+                        }
+
+                    }).done(res => {
+                        if (res.status) {
+                            let options1 = ``;
+                            res.subSubCategory.forEach(element => {
+                                options1 += `<option value="${element.subSubCategoryID}">${element.name}</option>`
+                            });
+                            $('#subSubCategory').html(options1)
+                        }
+                    })
+                }else{
+
+                    $('#subSubCategory').html('');
+                }
             }
         })
     })
@@ -190,8 +209,7 @@ $(() => {
         
         }).done(res => {
             if (res.status) {
-                //let options = `<option value="">--Select SubSubCategory--</option>`
-                let options = ``
+                let options = ``;
                 res.subSubCategory.forEach(element => {
                     options += `<option value="${element.subSubCategoryID}">${element.name}</option>`
                 });
@@ -205,7 +223,8 @@ $(() => {
         // album_name = 'men'
         let category = $('#category').val();
         let subCategory = $('#subCategory').val();
-        if (!album_name || !category || !subCategory) {
+        let subSubCategory = $('#subSubCategory').val();
+        if (!album_name || !category || !subCategory || !subSubCategory) {
             swal({
                 title: "Error",
                 text: "please input all fields exactly.",
@@ -225,7 +244,8 @@ $(() => {
             data: {
                 album_name: album_name,
                 category: category,
-                subCategory
+                subCategory:subCategory,
+                subSubCategory: subSubCategory
             }
         })
             .done((res) => {
@@ -268,7 +288,7 @@ $(() => {
 
     $('#uploaddata_old').click(() => {
         let album_name = $('#album_name_old option:selected').text();
-        album_name = 'men'
+        //album_name = 'men'
         let token = $('#token').val();
         if (album_name == '' || token == '') {
             swal({
@@ -277,7 +297,7 @@ $(() => {
                 icon: "warning",
                 button: "OK",
             });
-            return; 
+            return;
         }
         else {
             $('#uploaddata_old').prop('disabled', true);

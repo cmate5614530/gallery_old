@@ -15,6 +15,7 @@ var txtkeyModel = require('../model/txtkey');
 let token = '';
 let category = '';
 let subCategory = '';
+let subSubCategory = '';
 var keyword = '';
 const { imageHash } = require('image-hash');
 const path = require('path')
@@ -49,7 +50,7 @@ class uploadController {
         let nkey = await nkeyModel.find({});
         let txtkey = await txtkeyModel.find({});
         let categoryData = await getCategory();
-        // console.log(albumlist) 
+        // console.log(albumlist)
         res.render('upload', { key: key, albumlist: albumlist.albumlist, wxcodelist: albumlist.wxcodelist, pmtkey: pmtkey, nkey: nkey, txtkey: txtkey, categoryData: categoryData.data });
     }
     async getSubCategory(req, res) {
@@ -183,7 +184,8 @@ class uploadController {
         uploadstatus = true;
         let album_name = req.body.album_name;
         category = req.body.category;
-        subCategory = req.body.subCategory
+        subCategory = req.body.subCategory;
+        subSubCategory = req.body.subSubCategory;
         keyword = await keywordModel.find({});
         let albumParentFolder = `./images/` + album_name;
         if (fs.existsSync(albumParentFolder)) {
@@ -196,7 +198,7 @@ class uploadController {
                 }
             }
             console.log("uploading all done");
-            // del([albumParentFolder + '/**', '!./images/temp']);
+            del([albumParentFolder + '/**', '!./images/temp']);
             res.json({ status: true, message: 'all done', duplicatedimage: duplicatedimage });
             duplicatedimage = '';
             uploadstatus = false;
@@ -591,6 +593,7 @@ const handleAlbumDir = function (args) {
                                     let data = {
                                         categoryID: category,
                                         subCategoryID: subCategory,
+                                        subSubCategoryID: subSubCategory,
                                         name: albumNameAndCategory,
                                         description: description,
                                         images: pathArray
@@ -654,6 +657,7 @@ const handleAlbumDir = function (args) {
                                 let data = {
                                     categoryID: category,
                                     subCategoryID: subCategory,
+                                    subSubCategoryID: subSubCategory,
                                     name: albumNameAndCategory,
                                     description: description,
                                     images: pathArray

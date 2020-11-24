@@ -47,7 +47,6 @@
             <div class="col-md-3 col-sm-3">
               <!-- <input type="text" id="album_name" class="form-control" placeholder="Album Name"> -->
               <select name="album_name" id="album_name" class="form-control">
-                <!-- <option value="">--Select album name--</option> -->
                 <% for(var i=0; i < albumlist.length; i++) {%>
                 <option value="'<%= albumlist[i] %>'"><%= albumlist[i] %></option>
                 <%}%>
@@ -55,7 +54,6 @@
               </div>
               <div class="col-md-2 col-sm-2">
                 <select name="category" id="category" class="form-control">
-                  <!-- <option value="">--Select category--</option> -->
                   <% for(var i=0; i < categoryData.category.length; i++) {%>
                 <option value="<%= categoryData.category[i].categoryID %>"><%= categoryData.category[i].name %></option>
                 <%}%>
@@ -63,7 +61,6 @@
               </div> 
               <div class="col-md-2 col-sm-2">
                 <select name="subCategory" id="subCategory" class="form-control">
-                  <!-- <option value="">--Select SubCategory--</option> -->
                   <% for(var i=0; i < categoryData.subCategory.length; i++) {%>
                 <option value="<%= categoryData.subCategory[i].subCategoryID %>"><%= categoryData.subCategory[i].name %>
                 </option>
